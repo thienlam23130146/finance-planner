@@ -14,7 +14,15 @@ export const transactionSchema = z.object({
     .max(120, { error: "Tối đa 120 ký tự" }),
   category: z.enum(Category,
     { error: "Chọn danh mục" }),
-  date: z.iso.date({ error: "Ngày không hợp lệ" }),
+  date: z.iso
+    .date({ error: "Ngày không hợp lệ" })
+    .refine(
+      (val) => {
+        const today = new Date().toLocaleDateString("en-CA"); // Trả về định dạng "YYYY-MM-DD" theo giờ địa phương
+        return val <= today;
+      },
+      { error: "Ngày không được ở tương lai" }
+    ),
 });
 
 type Field = keyof z.infer<typeof transactionSchema>;
@@ -35,3 +43,16 @@ export function readValues(data: FormData): Values {
     fields.map((f) => [f, String(data.get(f) ?? "")]),
   );
 }
+
+// Bộ lọc đọc từ URL: /transactions?range=…&type=…
+export const RANGES =
+  ["this-month", "last-month", "all"] as const;
+
+export const transactionFilterSchema = z.object({
+  range: z.enum(RANGES).default("last-month"),
+  type: z.enum(TransactionType).optional(),
+  category: z.enum(Category).optional(),
+});
+
+export type Filters =
+  z.infer<typeof transactionFilterSchema>;

@@ -1,11 +1,29 @@
 import { prisma } from "@/lib/prisma";
-import { formatVND } from "@/lib/finance";
-export default async function TransactionsPage() {
+import { formatVND, getDateRange } from "@/lib/finance";
+import { transactionFilterSchema } from "@/lib/validation";
+import { TransactionForm } from "./transaction-form";
+import { TransactionFilters } from "./transaction-filters";
+
+export default async function TransactionsPage({
+  searchParams,
+}: PageProps<"/transactions">) {
+  // Next 16: searchParams là Promise → phải await
+  // URL sai (?type=abc) → về bộ lọc mặc định
+  const filter = transactionFilterSchema
+    .catch({ range: "this-month" })
+    .parse(await searchParams);
   const rows = await prisma.transaction.findMany({
+    where: {
+      date: getDateRange(filter.range),
+      type: filter.type,
+      category: filter.category,
+    },
     orderBy: { date: "desc" },
   });
   return (
     <main className="grid max-w-md gap-4 p-8">
+      <TransactionForm />
+      <TransactionFilters {...filter} />
       <p>{rows.length} giao dịch</p>
       <ul>
         {rows.map((t) => (
