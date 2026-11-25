@@ -1,6 +1,8 @@
 import * as z from "zod";
 import {
-  Category, TransactionType,
+  Category, 
+  Priority,
+  TransactionType,
 } from "@/generated/prisma/enums";
 
 export const transactionSchema = z.object({
@@ -29,11 +31,20 @@ type Field = keyof z.infer<typeof transactionSchema>;
 type Values = Partial<Record<Field, string>>;
 
 // Kết quả action trả về cho form sau mỗi lần gửi
+//FormState của transactions
 export type FormState = {
   ok?: boolean;
   message?: string;
   errors?: Partial<Record<Field, string[]>>;
   values?: Values;
+};
+
+//fromstate của Wishlist
+export type WishlistFormState = {
+  ok?: boolean;
+  message?: string;
+  errors?: Partial<Record<keyof z.infer<typeof wishlistSchema>, string[]>>;
+  values?: Record<string, string>;
 };
 
 // FormData → object chuỗi (để trả lại form khi lỗi)
@@ -56,3 +67,16 @@ export const transactionFilterSchema = z.object({
 
 export type Filters =
   z.infer<typeof transactionFilterSchema>;
+
+export const wishlistSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(1, { error: "Nhập tên món đồ" })
+    .max(120, { error: "Tối đa 120 ký tự" }),
+  cost: z.coerce
+    .number()
+    .int({ error: "Phải là số nguyên" })
+    .positive({ error: "Giá phải lớn hơn 0" }),
+  priority: z.enum(Priority, { error: "Chọn mức ưu tiên" }),
+});
