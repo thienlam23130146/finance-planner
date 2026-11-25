@@ -37,10 +37,20 @@ export default function LoginPage() {
       <input name="password" type="password"
         placeholder="Mật khẩu (≥ 8 ký tự)" />
       {error && <p role="alert">{error}</p>}
+      
       <button>{label}</button>
+
       <button type="button"
         onClick={() => setIsSignUp(!isSignUp)}>
         {isSignUp ? "Đã có tài khoản" : "Tạo tài khoản"}
+      </button>
+      
+      <button type="button" onClick={() =>
+        authClient.signIn.social({
+          provider: "github",
+          callbackURL: "/transactions",
+        })}>
+        Đăng nhập với GitHub
       </button>
     </form>
   );
