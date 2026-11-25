@@ -1,7 +1,9 @@
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/dal";
 import { formatVND } from "@/lib/finance";
 import { WishlistForm } from "./wishlist-form";
+import { SignOutButton } from "../transactions/sign-out-button";
 import { deleteWishlistItem, purchaseWishlistItem } from "./actions";
 
 const PRIORITY_BADGE: Record<string, string> = {
@@ -33,7 +35,19 @@ export default async function WishlistPage() {
 
   return (
     <main className="grid max-w-md gap-4 p-8">
-      <h1 className="text-2xl font-bold">Wishlist</h1>
+      
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Wishlist</h1>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/transactions"
+            className="rounded border px-3 py-1 text-sm hover:bg-gray-100"
+          >
+            Giao dịch
+          </Link>
+          <SignOutButton />
+        </div>
+      </div>
 
       <div className="rounded border p-3 text-sm">
         <p>

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/dal";
 import { formatVND, getDateRange } from "@/lib/finance";
@@ -31,6 +32,14 @@ export default async function TransactionsPage({
       <p>Xin chào {user.name} ({user.email})</p>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Giao dịch</h1>
+
+        <Link
+          href="/wishlist"
+          className="rounded border px-3 py-1 text-sm hover:bg-gray-100"
+        >
+          Wishlist
+        </Link>
+
         <SignOutButton />
       </div>
       <TransactionForm />
