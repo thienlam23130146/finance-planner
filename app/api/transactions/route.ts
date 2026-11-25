@@ -1,9 +1,19 @@
 import type { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { getSession } from "@/lib/dal";
 import { getDateRange } from "@/lib/finance";
 import { transactionFilterSchema } from "@/lib/validation";
 
 export async function GET(request: NextRequest) {
+  // API trả JSON: không redirect, báo 401
+  const session = await getSession();
+  if (!session) {
+    return Response.json(
+      { error: "Chưa đăng nhập" },
+      { status: 401 },
+    );
+  }
+
   const parsed = transactionFilterSchema.safeParse(
     Object.fromEntries(request.nextUrl.searchParams),
   );
@@ -13,6 +23,7 @@ export async function GET(request: NextRequest) {
       { status: 400 },
     );
   }
+  
   const { range, ...rest } = parsed.data;
   const rows = await prisma.transaction.findMany({
     where: { date: getDateRange(range), ...rest },
