@@ -34,6 +34,13 @@ export default async function TransactionsPage({
         <h1 className="text-2xl font-bold">Giao dịch</h1>
 
         <Link
+          href="/dashboard"
+          className="rounded border px-3 py-1 text-sm hover:bg-gray-100"
+        >
+          Dashboard
+        </Link>
+
+        <Link
           href="/wishlist"
           className="rounded border px-3 py-1 text-sm hover:bg-gray-100"
         >

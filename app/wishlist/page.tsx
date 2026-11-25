@@ -35,10 +35,16 @@ export default async function WishlistPage() {
 
   return (
     <main className="grid max-w-md gap-4 p-8">
-      
+
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Wishlist</h1>
         <div className="flex items-center gap-2">
+          <Link
+            href="/dashboard"
+            className="rounded border px-3 py-1 text-sm hover:bg-gray-100"
+          >
+            Dashboard
+          </Link>
           <Link
             href="/transactions"
             className="rounded border px-3 py-1 text-sm hover:bg-gray-100"
