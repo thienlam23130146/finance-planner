@@ -48,11 +48,20 @@ export type WishlistFormState = {
 };
 
 // FormData → object chuỗi (để trả lại form khi lỗi)
-export function readValues(data: FormData): Values {
-  const fields = Object.keys(transactionSchema.shape);
-  return Object.fromEntries(
-    fields.map((f) => [f, String(data.get(f) ?? "")]),
-  );
+// export function readValues(data: FormData): Values {
+//   const fields = Object.keys(transactionSchema.shape);
+//   return Object.fromEntries(
+//     fields.map((f) => [f, String(data.get(f) ?? "")]),
+//   );
+// }
+export function readValues(formData: FormData): Record<string, string> {
+  const values: Record<string, string> = {};
+  for (const [key, value] of formData.entries()) {
+    if (typeof value === "string") {
+      values[key] = value;
+    }
+  }
+  return values;
 }
 
 // Bộ lọc đọc từ URL: /transactions?range=…&type=…
@@ -70,7 +79,7 @@ export type Filters =
 
 export const wishlistSchema = z.object({
   name: z
-    .string()
+    .string({ error: "Nhập tên món đồ" })
     .trim()
     .min(1, { error: "Nhập tên món đồ" })
     .max(120, { error: "Tối đa 120 ký tự" }),
