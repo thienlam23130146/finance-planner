@@ -5,6 +5,7 @@ import { formatVND } from "@/lib/finance";
 import { WishlistForm } from "./wishlist-form";
 import { SignOutButton } from "../transactions/sign-out-button";
 import { deleteWishlistItem, purchaseWishlistItem } from "./actions";
+import { MilestoneNotifier } from "@/components/ui/milestone-notifier";
 
 const PRIORITY_BADGE: Record<string, string> = {
   HIGH: "Cao",
@@ -35,6 +36,7 @@ export default async function WishlistPage() {
 
   return (
     <main className="grid max-w-md gap-4 p-8">
+      <MilestoneNotifier items={items} balance={soDu} />
 
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Wishlist</h1>

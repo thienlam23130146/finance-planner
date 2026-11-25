@@ -5,6 +5,7 @@ import { formatVND } from "@/lib/finance";
 import { ExpensePieChart } from "./expense-pie-chart";
 import { WishlistProgress } from "./wishlist-progress";
 import { SignOutButton } from "../transactions/sign-out-button";
+import { MilestoneNotifier } from "@/components/ui/milestone-notifier";
 
 export default async function DashboardPage() {
   const user = await requireUser();
@@ -51,6 +52,7 @@ export default async function DashboardPage() {
 
   return (
     <main className="mx-auto grid max-w-2xl gap-6 p-8">
+      <MilestoneNotifier items={wishlistItems} balance={balance} />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Tổng quan tài chính</h1>
