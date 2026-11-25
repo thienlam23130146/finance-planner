@@ -3,6 +3,7 @@ import { formatVND, getDateRange } from "@/lib/finance";
 import { transactionFilterSchema } from "@/lib/validation";
 import { TransactionForm } from "./transaction-form";
 import { TransactionFilters } from "./transaction-filters";
+import { SignOutButton } from "./sign-out-button";
 
 export default async function TransactionsPage({
   searchParams,
@@ -22,6 +23,10 @@ export default async function TransactionsPage({
   });
   return (
     <main className="grid max-w-md gap-4 p-8">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Giao dịch</h1>
+        <SignOutButton />
+      </div>
       <TransactionForm />
       <TransactionFilters {...filter} />
       <p>{rows.length} giao dịch</p>
